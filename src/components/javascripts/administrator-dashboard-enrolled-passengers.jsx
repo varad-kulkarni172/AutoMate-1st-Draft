@@ -73,7 +73,7 @@ function AdministratorDashboardPassengers (){
           // Get the contract instance
           const contract = new web3.eth.Contract(CommuteIOABI, contractAddress);
           setContract(contract);
-          if (accounts[0]=='0x6c03F36B57Ad95aeAC06ad1dD100da00d4936aF5'){
+          if (accounts[0]==='0x035CE5BD53eF7903CCeeFCb192604DC20F3d9576'){
             setRoleAdmin(true);
           }
           // Load the passenger requests
@@ -297,9 +297,9 @@ function AdministratorDashboardPassengers (){
                    <td style={{textAlign:'left',fontSize:"larger",paddingBottom:"1vh",paddingLeft:"2vh"}}>{passengers[selectedPassID-1].PassGender}</td>
                  </tr>
                  </tbody></table>
-                 {!(passengers[selectedPassID-1].PassVehicleDetailsHash==" ") && (<h3 style={{fontWeight:"700", fontSize:"larger"}}>Vehicle Details</h3>)}
+                 {!(passengers[selectedPassID-1].PassVehicleDetailsHash===" ") && (<h3 style={{fontWeight:"700", fontSize:"larger"}}>Vehicle Details</h3>)}
            
-                 {!(passengers[selectedPassID-1].PassVehicleDetailsHash==" ") && (
+                 {!(passengers[selectedPassID-1].PassVehicleDetailsHash===" ") && (
                  <table style={{width:'50vw'}}>
                    <tbody>
                    <tr style={{height:"1vh"}}>

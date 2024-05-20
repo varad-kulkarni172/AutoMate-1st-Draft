@@ -253,7 +253,7 @@ function AdministratorDashboardRequests (){
                           onClick={() => {setSlectedRequestID(request.PassRequestID);handleSkipClick();}}><b>Action Pending</b></button></label>
                       )}
                       {(request.PassRequestStatus==1 ||request.PassRequestStatus==2) &&(
-                          <label style={{width:"10vw",paddingTop:"3vh", marginLeft:"-16vw",marginTop:'0.5vh', color:(request.PassRequestStatus==1)?"#14C38E":"#EB5353"}}><b>Action Taken</b></label>
+                          <label style={{width:"10vw",paddingTop:"3vh", marginLeft:"-16vw",marginTop:'0.5vh', color:(request.PassRequestStatus===1)?"#14C38E":"#EB5353"}}><b>Action Taken</b></label>
                       )}
 
 
@@ -365,13 +365,13 @@ function AdministratorDashboardRequests (){
                       <td style={{textAlign:'left',fontSize:"larger",paddingBottom:"1vh",paddingLeft:"2vh"}}>Requestor's Gender: </td>
                       <td style={{textAlign:'left',fontSize:"larger",paddingBottom:"1vh",paddingLeft:"2vh"}}>{passengerRequests[selectedRequestID-1].PassGender}</td>
                     </tr>
-                    {!(passengerRequests[selectedRequestID-1].PassVehicleDetailsHash==" ") && (<tr style={{height:"1vh"}}><td><h3 style={{fontWeight:"700", fontSize:"larger"}}>Vehicle Details</h3></td></tr>)}
+                    {!(passengerRequests[selectedRequestID-1].PassVehicleDetailsHash===" ") && (<tr style={{height:"1vh"}}><td><h3 style={{fontWeight:"700", fontSize:"larger"}}>Vehicle Details</h3></td></tr>)}
                     
                     </tbody></table>
-                    {!(passengerRequests[selectedRequestID-1].PassVehicleDetailsHash==" ") && (
+                    {!(passengerRequests[selectedRequestID-1].PassVehicleDetailsHash===" ") && (
                        <h3 style={{fontWeight:"700", fontSize:"x-large",color:'black',textAlign:'left',marginBottom:'2vh'}}>Vehicle Details</h3>   
                     )}
-                    {!(passengerRequests[selectedRequestID-1].PassVehicleDetailsHash==" ") && (
+                    {!(passengerRequests[selectedRequestID-1].PassVehicleDetailsHash===" ") && (
                                      
                     <table style={{width:'44vw'}}>
                       <tbody>
@@ -407,19 +407,19 @@ function AdministratorDashboardRequests (){
 
                     <div style={{display:'flex',flexDirection:'row'}}>
                     <h3 style={{fontWeight:"700", fontSize:"x-large",color:'black',textAlign:'left',marginTop:'2vh',marginBottom:'2vh'}}>Application Status</h3>
-                    {passengerRequests[selectedRequestID-1].PassRequestStatus == 1 && (
+                    {passengerRequests[selectedRequestID-1].PassRequestStatus === 1 && (
                         <div style={{border:"2px solid #03C988", paddingTop:"1vh", textAlign:'center',height:'6vh',marginLeft:'2vw',width:"15vw",marginTop:'1vh'}}>
                         <h4 style={{color:"#03C988",fontWeight:"700", fontSize:"larger"}}>APPROVED</h4>
                         </div>
                       )}
-                      {passengerRequests[selectedRequestID-1].PassRequestStatus == 2 && (
+                      {passengerRequests[selectedRequestID-1].PassRequestStatus === 2 && (
                         <div style={{border:"2px solid #F24C3D", paddingTop:"1vh", textAlign:'center',height:'6vh',marginLeft:'2vw',width:"15vw",marginTop:'1vh'}}>
                           <h4 style={{color:"#F24C3D",fontWeight:"700", fontSize:"larger"}}>REJECTED</h4>
 
                             </div>
                       )}
 
-                      {passengerRequests[selectedRequestID-1].PassRequestStatus == 0 && (
+                      {passengerRequests[selectedRequestID-1].PassRequestStatus === 0 && (
                         <div style={{border:"2px solid #000000", paddingTop:"1vh", textAlign:'center',height:'6vh',marginLeft:'2vw',width:"15vw",marginTop:'1vh'}}>
                           <h4 style={{color:"#000000",fontWeight:"700", fontSize:"larger"}}>PENDING</h4>
 
