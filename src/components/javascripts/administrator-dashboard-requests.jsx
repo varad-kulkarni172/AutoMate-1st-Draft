@@ -264,11 +264,11 @@ function AdministratorDashboardRequests (){
                   {passengerRequests.map((request) => (
                     <tr key={request.PassRequestID} style={{height:"10vh", border:"solid 1px black"}}>
                       <td style={{width:"30vw", paddingLeft:'1vw'}}><b>Request ID:</b> {request.PassRequestID}</td>
-                      {request.PassRequestStatus===0 &&(
+                      {request.PassRequestStatus==0 &&(
                           <label style={{width:"10vw",paddingTop:"3vh", marginLeft:"-18vw",marginTop:'0vh'}}><button style={{height:"1vh", width:"15vw", color:"black", marginTop:"-1vh",marginLeft:"-1vw", backgroundColor:"transparent"}} 
                           onClick={() => {setSlectedRequestID(request.PassRequestID);handleSkipClick();}}><b>Action Pending</b></button></label>
                       )}
-                      {(request.PassRequestStatus===1 ||request.PassRequestStatus===2) &&(
+                      {(request.PassRequestStatus==1 ||request.PassRequestStatus==2) &&(
                           <label style={{width:"10vw",paddingTop:"3vh", marginLeft:"-16vw",marginTop:'0.5vh', color:(request.PassRequestStatus===1)?"#14C38E":"#EB5353"}}><b>Action Taken</b></label>
                       )}
 
