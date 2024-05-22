@@ -122,15 +122,31 @@ function AdministratorDashboardRequests (){
     setPassengerRequests(passengerRequests);
   };
 
+  // const approvePassengerRequest = async (passreqid) => {
+  //   const currentDate = new Date().toISOString(); // Obtain the current date in ISO format
+  //   await contract.methods.ApprovePassengerRequest(passreqid, currentDate).send({ from: accounts[0] });
+  //   await loadPassengerRequests(contract);
+  //   await loadPassengers(contract);
+  //   setShowAlertModal(true);
+  //   setShowModal(false)
+  //   //alert("Passenger Request Approved.");
+  //   loadPassengers(contract);
+  // };
+
   const approvePassengerRequest = async (passreqid) => {
     const currentDate = new Date().toISOString(); // Obtain the current date in ISO format
-    await contract.methods.ApprovePassengerRequest(passreqid, currentDate).send({ from: accounts[0] });
-    await loadPassengerRequests(contract);
-    await loadPassengers(contract);
-    setShowAlertModal(true);
-    setShowModal(false)
-    //alert("Passenger Request Approved.");
-    loadPassengers(contract);
+    try {
+      await contract.methods.ApprovePassengerRequest(passreqid, currentDate).send({ from: accounts[0] });
+      await loadPassengerRequests(contract);
+      await loadPassengers(contract);
+      setShowAlertModal(true);
+      setShowModal(false);
+      // alert("Passenger Request Approved.");
+      loadPassengers(contract);
+    } catch (error) {
+      console.error("Error approving passenger request:", error);
+      alert("An error occurred while approving the passenger request. Please try again.");
+    }
   };
 
 
