@@ -5,6 +5,7 @@ import "../stylesheets/contracttesting.css";
 
 //const contractAddress = '0x6f9360Fc1Ca4833818FEc262FCb3eF204F8357CD';
 const contractAddress = '0x9D66687E6Da2BC0A5444125A8fA389C3e96F1921';
+//const contractAddress = '0x035CE5BD53eF7903CCeeFCb192604DC20F3d9576';
 function Passenger() {
   const [web3, setWeb3] = useState(null);
   const [accounts, setAccounts] = useState([]);
