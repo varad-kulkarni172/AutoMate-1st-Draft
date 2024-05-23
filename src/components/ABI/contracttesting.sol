@@ -63,7 +63,7 @@ contract CommuteIO {
         });
     }
 
-    function approvePassengerRequest(uint256 _passRequestID) public {
+    function approvePassengerRequest(uint256 _passRequestID, string memory _currentDate) public {
         require(passengerRequests[_passRequestID].passRequestID != 0, "Request not found");
         require(passengerRequests[_passRequestID].passRequestStatus == 0, "Request already processed");
 
