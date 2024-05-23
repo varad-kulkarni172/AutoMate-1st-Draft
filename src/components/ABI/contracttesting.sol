@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: Undefined
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
 contract CommuteIO {
@@ -136,39 +136,35 @@ contract CommuteIO {
     }
 
     // Function to get the details of an enrolled passenger
-    function GetPassDetails(
-        uint256 _passengerId
-    )
-        public
-        view
-        returns (
-            uint256,
-            string memory,
-            address,
-            string memory,
-            string memory,
-            string memory,
-            string memory,
-            uint256,
-            uint256,
-            uint256,
-            uint256
-        )
-    {
-        Passenger storage passenger = passengers[_passengerId];
-        return (
-            passenger.id,
-            passenger.name,
-            passenger.walletAddress,
-            passenger.homeAddress,
-            passenger.email,
-            passenger.vehicleName,
-            passenger.vehicleNumber,
-            passenger.vehicleDetailsHash,
-            passenger.gender,
-            passenger.review,
-            passenger.ridesHosted,
-            passenger.ridesTaken
-        );
-    }
+    function getPassengerDetails(uint256 _passengerId) public view returns (
+    uint256 id,
+    string memory name,
+    address walletAddress,
+    string memory homeAddress,
+    string memory email,
+    string memory vehicleName,
+    string memory vehicleNumber,
+    bytes32 vehicleDetailsHash,
+    string memory gender,
+    string memory review,
+    uint256 ridesHosted,
+    uint256 ridesTaken
+) {
+    Passenger storage passenger = passengers[_passengerId];
+    return (
+        passenger.id,
+        passenger.name,
+        passenger.walletAddress,
+        passenger.homeAddress,
+        passenger.email,
+        passenger.vehicleName,
+        passenger.vehicleNumber,
+        passenger.vehicleDetailsHash,
+        passenger.gender,
+        passenger.review,
+        passenger.ridesHosted,
+        passenger.ridesTaken
+    );
+}
+
 }
