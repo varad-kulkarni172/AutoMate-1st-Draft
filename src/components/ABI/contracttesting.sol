@@ -2,169 +2,117 @@
 pragma solidity ^0.8.0;
 
 contract CommuteIO {
-    // Mapping to store passenger requests
+    struct PassengerRequest {
+        uint256 passRequestID;
+        string passName;
+        address passWalletAddress;
+        string passHomeAddress;
+        string passEMail;
+        string passVehicleName;
+        string passVehicleNumber;
+        string passVehicleDetailsHash;
+        string passGender;
+        uint8 passRequestStatus; // 0 - pending, 1 - approved, 2 - rejected
+    }
+
+    struct Passenger {
+        uint256 passID;
+        string passName;
+        address passWalletAddress;
+        string passHomeAddress;
+        string passEMail;
+        string passVehicleName;
+        string passVehicleNumber;
+        string passVehicleDetailsHash;
+        string passGender;
+        string passReview;
+        uint256 passRidesHosted;
+        uint256 passRidesTaken;
+    }
+
     mapping(uint256 => PassengerRequest) public passengerRequests;
-    // Mapping to store enrolled passengers
     mapping(uint256 => Passenger) public passengers;
-    // Variable to store the number of passenger requests
     uint256 public numPassRequests;
-    // Variable to store the number of enrolled passengers
     uint256 public numPassengers;
 
-    // Struct to represent a passenger request
-    struct PassengerRequest {
-        uint256 id;
-        string name;
-        address walletAddress;
-        string homeAddress;
-        string email;
-        string vehicleName;
-        string vehicleNumber;
-        string vehicleDetailsHash;
-        uint256 gender;
-        uint256 requestStatus;
-    }
+    event PassengerRequestApproved(uint256 passRequestID, string passVehicleDetailsHash);
+    event PassengerRequestRejected(uint256 passRequestID, string passVehicleDetailsHash);
 
-    // Struct to represent an enrolled passenger
-    struct Passenger {
-        uint256 id;
-        string name;
-        address walletAddress;
-        string homeAddress;
-        string email;
-        string vehicleName;
-        string vehicleNumber;
-        string vehicleDetailsHash;
-        uint256 gender;
-        uint256 review;
-        uint256 ridesHosted;
-        uint256 ridesTaken;
-    }
-
-    // Event emitted when a passenger request is approved
-    event PassengerRequestApproved(uint256 requestId);
-
-    // Event emitted when a passenger request is rejected
-    event PassengerRequestRejected(uint256 requestId);
-
-    // Function to add a new passenger request
     function addPassengerRequest(
-        string memory _name,
-        address _walletAddress,
-        string memory _homeAddress,
-        string memory _email,
-        string memory _vehicleName,
-        string memory _vehicleNumber,
-        string memory _vehicleDetailsHash,
-        uint256 _gender
+        string memory _passName,
+        address _passWalletAddress,
+        string memory _passHomeAddress,
+        string memory _passEMail,
+        string memory _passVehicleName,
+        string memory _passVehicleNumber,
+        string memory _passVehicleDetailsHash,
+        string memory _passGender
     ) public {
         numPassRequests++;
-        passengerRequests[numPassRequests] = PassengerRequest(
-            numPassRequests,
-            _name,
-            _walletAddress,
-            _homeAddress,
-            _email,
-            _vehicleName,
-            _vehicleNumber,
-            _vehicleDetailsHash,
-            _gender,
-            0 // Initial request status is 0 (pending)
-        );
+        passengerRequests[numPassRequests] = PassengerRequest({
+            passRequestID: numPassRequests,
+            passName: _passName,
+            passWalletAddress: _passWalletAddress,
+            passHomeAddress: _passHomeAddress,
+            passEMail: _passEMail,
+            passVehicleName: _passVehicleName,
+            passVehicleNumber: _passVehicleNumber,
+            passVehicleDetailsHash: _passVehicleDetailsHash,
+            passGender: _passGender,
+            passRequestStatus: 0
+        });
     }
 
-    // Function to approve a passenger request
-    function approvePassengerRequest(uint256 _requestId) public {
-        require(
-            passengerRequests[_requestId].requestStatus == 0,
-            "Request is not pending"
-        );
-        passengerRequests[_requestId].requestStatus = 1; // Update request status to 1 (approved)
-        emit PassengerRequestApproved(_requestId);
+    function approvePassengerRequest(uint256 _passRequestID, string memory _currentDate) public {
+        require(passengerRequests[_passRequestID].passRequestID != 0, "Request not found");
+        require(passengerRequests[_passRequestID].passRequestStatus == 0, "Request already processed");
+
+        passengerRequests[_passRequestID].passRequestStatus = 1;
+        addPassenger(passengerRequests[_passRequestID]);
+
+        emit PassengerRequestApproved(_passRequestID, passengerRequests[_passRequestID].passVehicleDetailsHash);
     }
 
-    // Function to reject a passenger request
-    function rejectPassengerRequest(uint256 _requestId) public {
-        require(
-            passengerRequests[_requestId].requestStatus == 0,
-            "Request is not pending"
-        );
-        passengerRequests[_requestId].requestStatus = 2; // Update request status to 2 (rejected)
-        emit PassengerRequestRejected(_requestId);
+    function rejectPassengerRequest(uint256 _passRequestID) public {
+        require(passengerRequests[_passRequestID].passRequestID != 0, "Request not found");
+        require(passengerRequests[_passRequestID].passRequestStatus == 0, "Request already processed");
+
+        passengerRequests[_passRequestID].passRequestStatus = 2;
+
+        emit PassengerRequestRejected(_passRequestID, passengerRequests[_passRequestID].passVehicleDetailsHash);
     }
 
-    // Function to get the number of passenger requests
-    function GetnumPassRequests() public view returns (uint256) {
+    function addPassenger(PassengerRequest memory request) internal {
+        numPassengers++;
+        passengers[numPassengers] = Passenger({
+            passID: numPassengers,
+            passName: request.passName,
+            passWalletAddress: request.passWalletAddress,
+            passHomeAddress: request.passHomeAddress,
+            passEMail: request.passEMail,
+            passVehicleName: request.passVehicleName,
+            passVehicleNumber: request.passVehicleNumber,
+            passVehicleDetailsHash: request.passVehicleDetailsHash,
+            passGender: request.passGender,
+            passReview: "",
+            passRidesHosted: 0,
+            passRidesTaken: 0
+        });
+    }
+
+    function getPassRequestDetails(uint256 _passRequestID) public view returns (PassengerRequest memory) {
+        return passengerRequests[_passRequestID];
+    }
+
+    function getPassDetails(uint256 _passID) public view returns (Passenger memory) {
+        return passengers[_passID];
+    }
+
+    function getnumPassRequests() public view returns (uint256) {
         return numPassRequests;
     }
 
-    // Function to get the details of a passenger request
-    function GetPassRequestDetails(
-        uint256 _requestId
-    )
-        public
-        view
-        returns (
-            uint256,
-            string memory,
-            address,
-            string memory,
-            string memory,
-            string memory,
-            string memory,
-            uint256,
-            uint256
-        )
-    {
-        PassengerRequest storage request = passengerRequests[_requestId];
-        return (
-            request.id,
-            request.name,
-            request.walletAddress,
-            request.homeAddress,
-            request.email,
-            request.vehicleName,
-            request.vehicleNumber,
-            request.gender,
-            request.requestStatus
-        );
-    }
-
-    // Function to get the number of enrolled passengers
-    function GetnumPassengers() public view returns (uint256) {
+    function getnumPassengers() public view returns (uint256) {
         return numPassengers;
     }
-
-    // Function to get the details of an enrolled passenger
-    function getPassengerDetails(uint256 _passengerId) public view returns (
-    uint256 id,
-    string memory name,
-    address walletAddress,
-    string memory homeAddress,
-    string memory email,
-    string memory vehicleName,
-    string memory vehicleNumber,
-    bytes32 vehicleDetailsHash,
-    string memory gender,
-    string memory review,
-    uint256 ridesHosted,
-    uint256 ridesTaken
-) {
-    Passenger storage passenger = passengers[_passengerId];
-    return (
-        passenger.id,
-        passenger.name,
-        passenger.walletAddress,
-        passenger.homeAddress,
-        passenger.email,
-        passenger.vehicleName,
-        passenger.vehicleNumber,
-        passenger.vehicleDetailsHash,
-        passenger.gender,
-        passenger.review,
-        passenger.ridesHosted,
-        passenger.ridesTaken
-    );
-}
-
 }
