@@ -1,10 +1,11 @@
+// SPDX-License-Identifier: Undefined
 pragma solidity ^0.8.0;
 
 contract CommuteIO {
     // Mapping to store passenger requests
-    mapping (uint256 => PassengerRequest) public passengerRequests;
+    mapping(uint256 => PassengerRequest) public passengerRequests;
     // Mapping to store enrolled passengers
-    mapping (uint256 => Passenger) public passengers;
+    mapping(uint256 => Passenger) public passengers;
     // Variable to store the number of passenger requests
     uint256 public numPassRequests;
     // Variable to store the number of enrolled passengers
@@ -74,14 +75,20 @@ contract CommuteIO {
 
     // Function to approve a passenger request
     function approvePassengerRequest(uint256 _requestId) public {
-        require(passengerRequests[_requestId].requestStatus == 0, "Request is not pending");
+        require(
+            passengerRequests[_requestId].requestStatus == 0,
+            "Request is not pending"
+        );
         passengerRequests[_requestId].requestStatus = 1; // Update request status to 1 (approved)
         emit PassengerRequestApproved(_requestId);
     }
 
     // Function to reject a passenger request
     function rejectPassengerRequest(uint256 _requestId) public {
-        require(passengerRequests[_requestId].requestStatus == 0, "Request is not pending");
+        require(
+            passengerRequests[_requestId].requestStatus == 0,
+            "Request is not pending"
+        );
         passengerRequests[_requestId].requestStatus = 2; // Update request status to 2 (rejected)
         emit PassengerRequestRejected(_requestId);
     }
@@ -92,16 +99,23 @@ contract CommuteIO {
     }
 
     // Function to get the details of a passenger request
-    function GetPassRequestDetails(uint256 _requestId) public view returns (
-        uint256,
-        string memory,
-        address,
-        string memory,
-        string memory,
-        string memory,
-        uint256,
-        uint256
-    ) {
+    function GetPassRequestDetails(
+        uint256 _requestId
+    )
+        public
+        view
+        returns (
+            uint256,
+            string memory,
+            address,
+            string memory,
+            string memory,
+            string memory,
+            string memory,
+            uint256,
+            uint256
+        )
+    {
         PassengerRequest storage request = passengerRequests[_requestId];
         return (
             request.id,
@@ -111,6 +125,7 @@ contract CommuteIO {
             request.email,
             request.vehicleName,
             request.vehicleNumber,
+            request.gender,
             request.requestStatus
         );
     }
@@ -121,18 +136,25 @@ contract CommuteIO {
     }
 
     // Function to get the details of an enrolled passenger
-    function GetPassDetails(uint256 _passengerId) public view returns (
-        uint256,
-        string memory,
-        address,
-        string memory,
-        string memory,
-        string memory,
-        string memory,
-        uint256,
-        uint256,
-        uint256
-    ) {
+    function GetPassDetails(
+        uint256 _passengerId
+    )
+        public
+        view
+        returns (
+            uint256,
+            string memory,
+            address,
+            string memory,
+            string memory,
+            string memory,
+            string memory,
+            uint256,
+            uint256,
+            uint256,
+            uint256
+        )
+    {
         Passenger storage passenger = passengers[_passengerId];
         return (
             passenger.id,
@@ -142,6 +164,8 @@ contract CommuteIO {
             passenger.email,
             passenger.vehicleName,
             passenger.vehicleNumber,
+            passenger.vehicleDetailsHash,
+            passenger.gender,
             passenger.review,
             passenger.ridesHosted,
             passenger.ridesTaken
